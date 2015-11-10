@@ -1,7 +1,23 @@
+require "syro"
+
 require "syro/versioning/version"
 
-module Syro
+class Syro
   module Versioning
-    # Your code goes here...
+
+    def version(number,&block)
+      return if number > request_version
+      instance_eval(&block)
+    end
+
+    def request_version
+      @request_version ||= if match = /version=(\d+)/.match(req.env['HTTP_ACCEPT'])
+        match[1].to_i
+      else
+        now = Time.now
+        now.day + 100*now.month + 10000*now.year
+      end
+    end
+
   end
 end
