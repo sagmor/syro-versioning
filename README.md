@@ -1,5 +1,11 @@
 # Syro::Versioning
 
+[![Gem](https://img.shields.io/gem/v/syro-versioning.svg)](https://rubygems.org/gems/syro-versioning)
+[![Build Status](https://travis-ci.org/sagmor/syro-versioning.svg)](https://travis-ci.org/sagmor/syro-versioning)
+[![Test Coverage](https://codeclimate.com/github/sagmor/syro-versioning/badges/coverage.svg)](https://codeclimate.com/github/sagmor/syro-versioning/coverage)
+[![Code Climate](https://codeclimate.com/github/sagmor/syro-versioning/badges/gpa.svg)](https://codeclimate.com/github/sagmor/syro-versioning)
+[![Inline docs](http://inch-ci.org/github/sagmor/syro-versioning.svg?branch=master)](http://inch-ci.org/github/sagmor/syro-versioning)
+
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/syro/versioning`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
