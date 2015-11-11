@@ -6,11 +6,10 @@
 [![Code Climate](https://codeclimate.com/github/sagmor/syro-versioning/badges/gpa.svg)](https://codeclimate.com/github/sagmor/syro-versioning)
 [![Inline docs](http://inch-ci.org/github/sagmor/syro-versioning.svg?branch=master)](http://inch-ci.org/github/sagmor/syro-versioning)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/syro/versioning`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO: Delete this and the text above, and describe your gem
+Add versioning matchers to your `Syro::Deck`
 
-## Installation
+## Usage
 
 Add this line to your application's Gemfile:
 
@@ -18,27 +17,61 @@ Add this line to your application's Gemfile:
 gem 'syro-versioning'
 ```
 
-And then execute:
+Include it in your `Syro::Deck`
 
-    $ bundle
+```ruby
+require "syro/versioning"
 
-Or install it yourself as:
+class MyApp < Syro::Deck
+  include Syro::Versioning
+end
+```
 
-    $ gem install syro-versioning
+Add versions to your app:
 
-## Usage
+```ruby
+app = Syro.new(MyApp) {
+  version(20151110) {
+    get {
+      res.write "Version 3"
+    }
+  }
 
-TODO: Write usage instructions here
+  version(20150102) {
+    get {
+      res.write "Version 2"
+    }
+  }
 
-## Development
+  version(20150101) {
+    get {
+      res.write "Version 1"
+    }
+  }
+}
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+env = {
+  "REQUEST_METHOD" => "GET",
+  "PATH_INFO"      => "/"
+}
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+p app.call(env)
+#=> [200, {"Content-Length"=>"13", "Content-Type"=>"text/html"}, ["Version 3"]]
+
+p app.call(env.merge('HTTP_ACCEPT' => 'text/html; version=20150701'))
+#=> [200, {"Content-Length"=>"13", "Content-Type"=>"text/html"}, ["Version 2"]]
+
+p app.call(env.merge('HTTP_ACCEPT' => 'text/html; version=20150101'))
+#=> [200, {"Content-Length"=>"13", "Content-Type"=>"text/html"}, ["Version 1"]]
+
+p app.call(env.merge('HTTP_ACCEPT' => 'text/html; version=20140101'))
+#=> [404, {}, []]
+```
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/syro-versioning. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/syro-versioning. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
