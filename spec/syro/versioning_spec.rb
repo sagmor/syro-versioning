@@ -26,7 +26,6 @@ describe Syro::Versioning do
   it "uses the Accept header for versioning" do
     header 'Accept', 'text/plain; version=1'
     expect(get('/').body).to eql("Version 1")
-
   end
 
   it "has a default version" do
